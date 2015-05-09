@@ -1,4 +1,4 @@
-# MOS 6502 ASM6 Syntax
+# MOS 6502 ASM6 Syntax Highlighting
 
 This is a syntax highlighting package for Sublime Text 2.
 
