@@ -1,0 +1,110 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+# Syntax Highlighting for MOS 6502 Assembly Language, ASM6 variant
+#
+# Copyright (c) 2015 by Genstein
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+name: MOS 6502 Assembly Language (ASM6)
+scopeName: source.syntax_name
+fileTypes: [s, as, asm]
+uuid: f2b92337-0a7e-4d0f-a315-ac5ea9758428
+
+patterns:
+
+# Strings (Double Quotes)
+- name: string.quoted.double.mos6502
+  match: '"[^"]*"'
+
+# Strings (Single Quotes)
+- name: string.quoted.single.mos6502
+  match: "'[^']*'"
+
+# Comments
+- name: comment.line.semicolon.mos6502
+  match: ";[^\n]*\n"
+
+# Equates (which begin a line, after any whitespace)
+- name: meta.equate.mos6502
+  match: "(?i)^\\s*([a-zA-Z0-9_][a-zA-Z0-9_\\.]*)([ \t]*=|[ \t]+equ[ \t]+)"
+  captures:
+    '1': {name: support.type.equate.mos6502}
+    '2': {name: keyword.operator.equate.mos6502}
+
+# Macro Definitions
+- name: meta.macro.mos6502
+  match: (macro)\s+([a-zA-Z_][a-zA-Z0-9_]*)\b
+  captures:
+    '1': {name: support.function.macro.directive.mos6502}
+    '2': {name: support.type.macro.name.mos6502}
+
+# Local Label Declarations
+- name: variable.other.local.label.mos6502
+  match: (@[a-zA-Z_][a-zA-Z0-9_]*\:?)
+
+# Global Label Declarations
+- name: support.type.label.mos6502
+  match: ([a-zA-Z_][a-zA-Z0-9_]*\:)
+
+# Numeric Constants (Hex)
+- name: constant.numeric.hex.mos6502
+  match: (?<![a-zA-Z])\$[0-9A-Fa-f]+\b
+
+# Numeric Constants (Binary)
+- name: constant.numeric.binary.mos6502
+  match: (?<![a-zA-Z])%[01]+\b
+
+# Numeric Constants (Decimal)
+- name: constant.numeric.decimal.mos6502
+  match: (?<![a-zA-Z])[+-]?[0-9]+\b
+
+# Immediate Operands (beginning with '#')
+- name: string.interpolated.immediate.operand.mos6502
+  match: (?i)#([^\s]+)\b
+  captures:
+    '1': {name: string.interpolated.immediate.operand.mos6502}
+
+# Operators
+- name: keyword.operator.mos6502
+  match: (\(|\)|\+|-|,|~|!|<|>|\*|/|%|<<|>>|<>|<|>|<=|>=|==|=|!=|&&|\|\||\^|&|\|)
+
+# Registers
+- name: keyword.other.register.mos6502
+  match: (?i)\b(x|y)\b
+
+# Directives
+- name: support.function.directive.mos6502
+  match: \.?(db|dw|byte|word|dc\.?b|dc\.?w|ds\.?b|ds\.?w|include|incbin|dl|dh|hex|pad|org|align|fillvalue|base|if|elseif|else|endif|ifdef|ifndef|endm|rept|endr|enum|ende|error)\b
+
+# Mnemonics
+- name: keyword.other.mnemonic.mos6502
+  match: (?i)\b(adc|and|asl|bcc|blt|bcs|bge|beq|bit|bmi|bne|bpl|brk|bvc|bvs|clc|cld|cli|clv|cmp|cpx|cpy|dec|dex|dey|eor|inc|inx|iny|jmp|jsr|lda|ldx|ldy|lsr|nop|ora|pha|php|pla|plp|rol|ror|rti|rts|sbc|sec|sed|sei|sta|stx|sty|tax|tay|tsx|txa|txs|tya)\b
+
+# Illegal Instructions / Unofficial Opcodes
+- name: invalid.illegal.mnemonic.mos6502
+  match: (?i)\b(alr|anc|arr|axs|lax|sax|dcp|isc|rla|rra|slo|sre|skb|ign|xaa|ahx|shx|shy|tas|las)\b
+
+# Macro and Global Label Usage (leading lowercase/underscore)
+- name: meta.macro.or.label.usage.mos6502
+  match: ([a-z_][a-zA-Z0-9_]*)
+
+# Equate Usage (leading uppercase)
+- name: variable.other.mos6502
+  match: ([A-Z][a-zA-Z0-9_]*)
